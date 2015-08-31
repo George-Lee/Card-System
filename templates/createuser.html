@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+{% for error in form.errors %}<p class=error><strong>Error:</strong> <b><u>{{ error }}</u></b> {{form.errors[error][0]}}</p>{%endfor%}
+<form method="POST", action="{{url_for('new_user')}}">
+	{{form.hidden_tag()}}
+	<h3>{{form.username.label}}{{form.username}}</h3>
+	<h3>{{form.password.label}}{{form.password}}</h3>
+	<h3>{{form.confirm.label}}{{form.confirm}}</h3>
+	<br/><br/>
+	<input type="submit" value="Change Password">
+</form>
+{% endblock %}

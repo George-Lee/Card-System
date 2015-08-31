@@ -1,0 +1,15 @@
+{% extends "layout.html"%}
+{% block body %}
+{% for error in form.errors %}<p class=error><strong>Error:</strong> <b><u>{{ error }}</u></b> {{form.errors[error][0]}}</p>{%endfor%}
+<form action="{{url_for('index')}}", method="post">
+	{{form.hidden_tag()}}
+	<h3><label>PAN</label>{{form.pana(maxlength=4, size=4)}}{{form.panb(maxlength=4, size=4)}}{{form.panc(maxlength=4, size=4)}}{{form.pand(maxlength=4, size=4)}}</h3>
+	<h3><label>Expiry (mm/yy)</label>{{form.expmon(maxlength=2, size=2)}}/{{form.expyear(maxlength=2, size=2)}}</h3>
+	<h3>{{form.name.label}}{{form.name}}</h3>
+	<h3>{{form.CV2.label}}{{form.CV2(maxlength=3, size=3)}}</h3>
+	<h3>{{form.reference.label}}{{form.reference}}</h3>
+	<h3>{{form.amount.label}}{{form.amount}}</h3>
+	<br/><br/>
+	<input type="submit" value="Submit card">
+</form>
+{% endblock %}

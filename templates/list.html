@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<table>
+<tr><td>Customer Name</td><td>Reference</td><td>Price Charged (GBP)</td><td>Card Number</td><td>Expiry Date</td><td>CV2</td><td>Created by</td></tr>
+{% for card in cards %}
+<tr><td>{{card[1]}}</td><td>{{card[2]}}</td><td>{{card[3]}}</td><td>{{card[4]}}</td><td>{{card[0]}}</td><td>{{card[6]}}</td><td>{{card[5]}}</td></tr>
+{%endfor%}
+</table>
+{% endblock %}

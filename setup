@@ -1,0 +1,27 @@
+The following must be installed in order to fun the card application:
+Visual C++ 9.0 (ak.ms/vcpython27)
+
+These must be installed via pip.
+
+(pip install {package})
+
+Flask
+flask_wtf
+sqlalchemy
+flask_sqlalchemy
+passlib
+Crypto
+
+This must be installed via easy_install
+
+(easy_install {package})
+
+pycrypto
+
+Please also ensure that 7z.exe is available in the system PATH
+
+To run:
+(With Command Prompt in same folder)
+python cards.py
+
+and the application will be available on localhost:5000

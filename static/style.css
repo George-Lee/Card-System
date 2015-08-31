@@ -1,0 +1,28 @@
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+/*body {
+    display: table-cell;
+    vertical-align: middle;
+}*/
+#menu li{
+	display: inline;
+	list-style-type: none;
+	padding-right: 20px;
+}
+
+h3{}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    /*text-align: right;*/
+}

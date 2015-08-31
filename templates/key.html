@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<p>Successfully created zips for the following references:</p>
+<ul>
+	{% for i in references %}
+	<li>{{i}}</li>
+	{% endfor %}
+</ul>
+{% endblock %}

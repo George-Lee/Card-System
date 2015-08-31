@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<form method="POST", action="{{url_for('pword')}}">
+	{{form.hidden_tag()}}
+	<h3>{{form.current.label}}{{form.current}}</h3>
+	<h3>{{form.new.label}}{{form.new}}</h3>
+	<h3>{{form.confirm.label}}{{form.confirm}}</h3>
+	<br/><br/>
+	<input type="submit" value="Change Password">
+</form>
+{% endblock %}
