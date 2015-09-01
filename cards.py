@@ -212,7 +212,7 @@ def create():
 		os.remove(f)
 	for card in cards:
 		cardd=row2dict(card)
-		reference = aesc.decrypt(cardd['referenceCode'])
+		reference = ''.join(st for st in aesc.decrypt(cardd['referenceCode']) if st.isalnum())
 		with open("{0}.csv".format(reference), 'wb') as f:
 			keys =[]
 			for key in cardd.keys():
