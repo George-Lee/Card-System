@@ -293,7 +293,7 @@ def list_users():
         temp_dict = {'username':user.username, 'id':user.id}
         user_list.append(temp_dict)
     if session.get('username')=='admin':
-        return render_template("userlist.html", user_list)
+        return render_template("userlist.html", user_list=user_list)
     else:
         abort(401)
     
