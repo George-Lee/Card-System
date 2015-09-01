@@ -290,7 +290,7 @@ def list_users():
     users = Users.query.all()
     user_list = []
     for user in users:
-        temp_dict = {username=user.username, id=user.id}
+        temp_dict = {'username':user.username, 'id':user.id}
         user_list.append(temp_dict)
     if session.get('username')=='admin':
         return render_template("userlist.html", user_list)
