@@ -305,6 +305,7 @@ def edit_user(user_id):
         if form.validate_on_submit():
             if form.choice.data== "delete":
                 db.session.delete(user)
+                db.session.commit()
                 flash("User {0} was deleted".format(user.username))
                 return redirect(url_for('list_users'))
             elif form.choice.data == "reset":
