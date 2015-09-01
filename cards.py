@@ -303,11 +303,11 @@ def edit_user(user_id):
         user = Users.query.get(int(user_id))
         form, error = EditUserForm(), None
         if form.validate_on_submit():
-            if form.choice.value == "delete":
+            if form.choice.data== "delete":
                 db.session.delete(user)
                 flash("User {0} was deleted".format(user.username))
                 return redirect(url_for(list_users))
-            elif form.choice.value == "reset":
+            elif form.choice.data == "reset":
                 user.password = Auth(user.username).hash("password")
                 user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), admin=0)
                 flash("User {0}'s password was reset to 'password', please ensure they change this on next login".format(user.username)) #Look at adding a flag to require password change after reset.
