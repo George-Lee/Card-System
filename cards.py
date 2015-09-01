@@ -226,7 +226,7 @@ def create():
 			for key in keys:
 				a.append(aesc.decrypt(cardd[key]))
 			w.writerow(a)
-		subprocess.call(['7z', 'a', '-p{0}'.format(pword), "./zips/{0}.zip".format(reference)] + ["{0}.csv".format(reference)])
+		os.system('7z a -p{0} "./zips/{1}.zip" "{2}.csv"'.format(pword, reference, reference))
 		references.append(reference)
 		db.session.delete(card)
 	files = glob.glob('./*.csv')
