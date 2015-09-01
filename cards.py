@@ -306,11 +306,11 @@ def edit_user(user_id):
             if form.choice.data== "delete":
                 db.session.delete(user)
                 flash("User {0} was deleted".format(user.username))
-                return redirect(url_for(list_users))
+                return redirect(url_for('list_users'))
             elif form.choice.data == "reset":
                 user.password = Auth(user.username).hash("password")
                 flash("User {0}'s password was reset to 'password', please ensure they change this on next login".format(user.username)) #Look at adding a flag to require password change after reset.
-                return redirect(url_for(list_users))
+                return redirect(url_for('list_users'))
             else:
                 error="You must choose to delete the user or reset their password."
         else:
