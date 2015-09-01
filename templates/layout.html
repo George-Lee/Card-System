@@ -18,6 +18,7 @@
 		<li><a href="{{url_for('date')}}">Change Validation</a></li>
 		<li><a href="{{url_for('logout')}}">Logout</a></li>
 		<li><a href="{{url_for('index')}}">Index</a></li>
+		<li><a href="{{url_for('list_users')}}">List users</a></li>
 	</ul>
 	{% else %}
 		{%if session.get('logged_in')%}
