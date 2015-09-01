@@ -310,6 +310,7 @@ def edit_user(user_id):
                 return redirect(url_for('list_users'))
             elif form.choice.data == "reset":
                 user.password = Auth(user.username).hash("password")
+                db.session.commit()
                 flash("User {0}'s password was reset to 'password', please ensure they change this on next login".format(user.username)) #Look at adding a flag to require password change after reset.
                 return redirect(url_for('list_users'))
             else:
