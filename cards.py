@@ -1,6 +1,6 @@
 from flask import *
 from flask_wtf import Form
-from wtforms import IntegerField, StringField, PasswordField, SelectField
+from wtforms import IntegerField, StringField, PasswordField, SelectField, RadioField
 from wtforms.validators import DataRequired, Length, NumberRange, EqualTo
 from flask.ext.sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
@@ -122,6 +122,8 @@ class NewUser(Form):
 class ExpirationForm(Form):
 	start = SelectField('Beginning of range', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'), ('21', '21'), ('22', '22'), ('23', '23'), ('24', '24'), ('25', '25'), ('26', '26'), ('27', '27'), ('28', '28'), ('29', '29'), ('30', '30'), ('31', '31'), ('32', '32'), ('33', '33'), ('34', '34'), ('35', '35'), ('36', '36'), ('37', '37'), ('38', '38'), ('39', '39'), ('40', '40'), ('41', '41'), ('42', '42'), ('43', '43'), ('44', '44'), ('45', '45'), ('46', '46'), ('47', '47'), ('48', '48'), ('49', '49'), ('50', '50'), ('51', '51'), ('52', '52'), ('53', '53'), ('54', '54'), ('55', '55'), ('56', '56'), ('57', '57'), ('58', '58'), ('59', '59'), ('60', '60'), ('61', '61'), ('62', '62'), ('63', '63'), ('64', '64'), ('65', '65'), ('66', '66'), ('67', '67'), ('68', '68'), ('69', '69'), ('70', '70'), ('71', '71'), ('72', '72'), ('73', '73'), ('74', '74'), ('75', '75'), ('76', '76'), ('77', '77'), ('78', '78'), ('79', '79'), ('80', '80'), ('81', '81'), ('82', '82'), ('83', '83'), ('84', '84'), ('85', '85'), ('86', '86'), ('87', '87'), ('88', '88'), ('89', '89'), ('90', '90'), ('91', '91'), ('92', '92'), ('93', '93'), ('94', '94'), ('95', '95'), ('96', '96'), ('97', '97'), ('98', '98'), ('99', '99')])
 	end = SelectField('End of range', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'), ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20'), ('21', '21'), ('22', '22'), ('23', '23'), ('24', '24'), ('25', '25'), ('26', '26'), ('27', '27'), ('28', '28'), ('29', '29'), ('30', '30'), ('31', '31'), ('32', '32'), ('33', '33'), ('34', '34'), ('35', '35'), ('36', '36'), ('37', '37'), ('38', '38'), ('39', '39'), ('40', '40'), ('41', '41'), ('42', '42'), ('43', '43'), ('44', '44'), ('45', '45'), ('46', '46'), ('47', '47'), ('48', '48'), ('49', '49'), ('50', '50'), ('51', '51'), ('52', '52'), ('53', '53'), ('54', '54'), ('55', '55'), ('56', '56'), ('57', '57'), ('58', '58'), ('59', '59'), ('60', '60'), ('61', '61'), ('62', '62'), ('63', '63'), ('64', '64'), ('65', '65'), ('66', '66'), ('67', '67'), ('68', '68'), ('69', '69'), ('70', '70'), ('71', '71'), ('72', '72'), ('73', '73'), ('74', '74'), ('75', '75'), ('76', '76'), ('77', '77'), ('78', '78'), ('79', '79'), ('80', '80'), ('81', '81'), ('82', '82'), ('83', '83'), ('84', '84'), ('85', '85'), ('86', '86'), ('87', '87'), ('88', '88'), ('89', '89'), ('90', '90'), ('91', '91'), ('92', '92'), ('93', '93'), ('94', '94'), ('95', '95'), ('96', '96'), ('97', '97'), ('98', '98'), ('99', '99')])
+class EditUserForm(Form):
+    choice = RadioField(None, choices=[("reset", "Reset User Password"), ("delete", "Delete User")])
 
 #Pages
 @app.route('/', methods=['GET', 'POST'])
@@ -171,6 +173,7 @@ def new_user():
 				user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), admin=0)
 				db.session.add(user)
 				db.session.commit()
+				flash("Successfully created user {0}".format(user.username))
 			else:
 				error="User already exists"
 		return render_template('createuser.html', form=form, error=error)
@@ -282,6 +285,36 @@ def date():
 		return render_template('changedate.html', form=form, error=error)
 	else:
 		abort(401)
+@app.route('/list_users')
+def list_users():
+    users = Users.query.all()
+    row2dict = lambda r: {c.name: str(getattr(r, c.name)) for c in r.__table__.columns}
+    user = row2dict(users)
+    if session.get('username')=='admin':
+        return render_template("userlist.html", user)
+    else:
+        abort(401)
+    
+@app.route('/user/<string:user_id>', methods=['get', 'post'])
+def edit_user(user_id):
+    if session.get('username')=='admin':
+        user = Users.query.get(int(user_id))
+        form, error = EditUserForm(), None
+        if form.validate_on_submit():
+            if form.choice == "delete":
+                db.session.delete(user)
+                flash("User {0} was deleted".format(user.username))
+            elif form.reset == "reset":
+                user.password = Auth(user.username).hash("password")
+                user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), admin=0)
+                flash("User {0}'s password was reset to 'password', please ensure they change this on next login".format(user.username)) #Look at adding a flag to require password change after reset.
+            else:
+                error="You must choose to delete the user or reset their password."
+        else:
+            error=error
+        return render_template('edituser.html', user_id=user_id, form=form, error=error)
+        
+    
 @app.route('/logout')
 def logout():
 	session.pop('logged_in')
