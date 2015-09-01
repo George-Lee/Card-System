@@ -288,10 +288,12 @@ def date():
 @app.route('/list_users')
 def list_users():
     users = Users.query.all()
-    row2dict = lambda r: {c.name: str(getattr(r, c.name)) for c in r.__table__.columns}
-    user = row2dict(users)
+    user_list = []
+    for user in users:
+        temp_dict = {username=user.username, id=user.id}
+        user_list.append(temp_dict)
     if session.get('username')=='admin':
-        return render_template("userlist.html", user)
+        return render_template("userlist.html", user_list)
     else:
         abort(401)
     
