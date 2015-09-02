@@ -1,7 +1,7 @@
 {% extends "layout.html"%}
 {% block body %}
 <script>
-    var container = document.getElementsByClassName("container")[0];
+    var container = document.getElementsByClassName("pan")[0];
     container.onkeyup = function(e) {
         var target = e.srcElement;
         var maxLength = parseInt(target.attributes["maxlength"].value, 10);
