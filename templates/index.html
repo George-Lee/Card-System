@@ -1,9 +1,38 @@
 {% extends "layout.html"%}
 {% block body %}
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+    $('input.pan').keyup(function () {
+    
+    /* Steps:
+       1. Get length values from field
+       2. Get maxlength value of field and convert to integer
+       3. Get data-next-field value of next field to focus on
+       4. Concat a hashtag and data value of field to jump to
+    */
+    
+    var fieldVal = $(this).val(),
+        fieldLen = fieldVal.length,
+        fieldMaxLen = parseInt($(this).attr('maxlength')),
+        jumpToField = $(this).data('next-field'),
+        nextFieldID = '#' + jumpToField;
+    
+    // Check if field length and maxlength are equal
+    if (fieldMaxLen === fieldLen) {
+    
+        // Check if data-next-field attribute is undefined or null
+        if (jumpToField === undefined || jumpToField === null) {
+    
+        } else {
+            $(nextFieldID).focus();
+        }
+    }
+    });
+</script>
 {% for error in form.errors %}<p class=error><strong>Error:</strong> <b><u>{{ error }}</u></b> {{form.errors[error][0]}}</p>{%endfor%}
 <form action="{{url_for('index')}}", method="post">
 	{{form.hidden_tag()}}
-	<h3><label>PAN</label>{{form.pana(maxlength=4, size=4)}}{{form.panb(maxlength=4, size=4)}}{{form.panc(maxlength=4, size=4)}}{{form.pand(maxlength=4, size=4)}}</h3>
+	<h3><label>PAN</label>{{form.pana(maxlength=4, size=4, class_="pan")}}{{form.panb(maxlength=4, size=4, class_="pan")}}{{form.panc(maxlength=4, size=4, class_="pan")}}{{form.pand(maxlength=4, size=4, class_="pan")}}</h3>
 	<h3><label>Expiry (mm/yy)</label>{{form.expmon(maxlength=2, size=2)}}/{{form.expyear(maxlength=2, size=2)}}</h3>
 	<h3>{{form.name.label}}{{form.name}}</h3>
 	<h3>{{form.CV2.label}}{{form.CV2(maxlength=3, size=3)}}</h3>
