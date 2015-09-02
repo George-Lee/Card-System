@@ -155,7 +155,7 @@ def index():
 					session["username"]=user.username
 					if user.reset == 1:
 					    flash("Your password was reset. Please ensure you change it to a memorable password.")
-					    return redirect(url_for('change'))
+					    return redirect(url_for('pword'))
 					else:
 					    return redirect(url_for('index'))
 				else:
