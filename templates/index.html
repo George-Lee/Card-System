@@ -1,7 +1,7 @@
 {% extends "layout.html"%}
 {% block body %}
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://raw.githubusercontent.com/Mathachew/jquery-autotab/master/js/jquery.autotab.min.js"></script>
+<script src="{{url_for('static', filename='autotab.js')}}"></script>
 <script>
     $('.pan').autotab('number')
 </script>
