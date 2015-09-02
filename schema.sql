@@ -5,7 +5,7 @@ create table cards (
 	cvc text not null,
 	cardNumber text not null,
 	expireDate text not null,
-	customerReference text not null,
+	clientReference text not null,
 	amount text not null,
 	user text not null
 );
