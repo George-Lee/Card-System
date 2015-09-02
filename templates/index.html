@@ -3,7 +3,7 @@
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="{{url_for('static', filename='autotab.js')}}"></script>
 <script>
-    $('.pan').autotab('number')
+    $('.pan').autotab()
 </script>
 {% for error in form.errors %}<p class=error><strong>Error:</strong> <b><u>{{ error }}</u></b> {{form.errors[error][0]}}</p>{%endfor%}
 <form action="{{url_for('index')}}", method="post">
