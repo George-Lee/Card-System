@@ -19,7 +19,7 @@ create table users(
 	id integer primary key autoincrement,
 	username text not null,
 	password text not null,
-	admin int not null
+	reset int not null
 );
 drop table if exists expiration;
 create table expiration(

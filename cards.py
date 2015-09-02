@@ -58,7 +58,7 @@ class Users(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.Text)
 	password = db.Column(db.Text) #Must auth this password
-	admin = db.Column(db.Integer)
+	reset = db.Column(db.Integer)
 
 	def __init__(self, **kwargs):
 		for name, value in kwargs.items():
@@ -153,7 +153,11 @@ def index():
 				if Auth(user.username).verify(user.password, form.password.data):
 					session["logged_in"]=True
 					session["username"]=user.username
-					return redirect(url_for('index'))
+					if user.reset == 1:
+					    flash("Your password was reset. Please ensure you change it to a memorable password.")
+					    return redirect(url_for('change'))
+					else:
+					    return redirect(url_for('index'))
 				else:
 					error="Username or password is incorrect."
 			except:
@@ -170,7 +174,7 @@ def new_user():
 		if form.validate_on_submit():
 			user = Users.query.filter_by(username=form.username.data).first()
 			if not user:
-				user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), admin=0)
+				user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), reset=0)
 				db.session.add(user)
 				db.session.commit()
 				flash("Successfully created user {0}".format(user.username))
@@ -310,8 +314,9 @@ def edit_user(user_id):
                 return redirect(url_for('list_users'))
             elif form.choice.data == "reset":
                 user.password = Auth(user.username).hash("password")
+                user.reset = 1
                 db.session.commit()
-                flash("User {0}'s password was reset to 'password', please ensure they change this on next login".format(user.username)) #Look at adding a flag to require password change after reset.
+                flash("User {0}'s password was reset to 'password', they will be directed to change their password on login.".format(user.username))
                 return redirect(url_for('list_users'))
             else:
                 error="You must choose to delete the user or reset their password."
