@@ -104,7 +104,7 @@ class CardForm(Form):
 	#CV2
 	CV2=IntegerField('CV2', validators=[DataRequired(), NumberRange(min=0, max=999, message="Value must be between 0 and 999")])
 	#Reference
-	reference=StringField('Customer Reference', validators=[DataRequired()])
+	reference=StringField('Client Reference', validators=[DataRequired()])
 	#amount
 	amount=IntegerField("Amount Charged (GBP)", validators=[DataRequired()])
 
