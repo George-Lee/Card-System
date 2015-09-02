@@ -70,7 +70,7 @@ class Cards(db.Model):
 	cvc = db.Column(db.Text)
 	cardNumber = db.Column(db.Text)
 	expireDate = db.Column(db.Text)
-	referenceCode = db.Column(db.Text)
+	customerReference = db.Column(db.Text)
 	amount = db.Column(db.Text)
 	user = db.Column(db.Text)
 
@@ -104,7 +104,7 @@ class CardForm(Form):
 	#CV2
 	CV2=IntegerField('CV2', validators=[DataRequired(), NumberRange(min=0, max=999, message="Value must be between 0 and 999")])
 	#Reference
-	reference=StringField('Reference Code', validators=[DataRequired()])
+	reference=StringField('Customer Reference', validators=[DataRequired()])
 	#amount
 	amount=IntegerField("Amount Charged (GBP)", validators=[DataRequired()])
 
@@ -138,7 +138,7 @@ def index():
 			cardnumber="{0}{1}{2}{3}".format(form.pana.data, form.panb.data, form.panc.data, form.pand.data)
 			expiredate="{0}/{1}".format(form.expmon.data, form.expyear.data)
 			aesc = aescrypt(StringIO.StringIO(Users.query.get(1).password).read(32)) #ridiculously arbritary but only way to reasonably encrypt data.
-			card = Cards(name=aesc.encrypt(form.name.data), cvc=aesc.encrypt(form.CV2.data), cardNumber=aesc.encrypt(cardnumber), expireDate=aesc.encrypt(expiredate), referenceCode=aesc.encrypt(form.reference.data), amount=aesc.encrypt(form.amount.data), user=aesc.encrypt(session.get('username')))
+			card = Cards(name=aesc.encrypt(form.name.data), cvc=aesc.encrypt(form.CV2.data), cardNumber=aesc.encrypt(cardnumber), expireDate=aesc.encrypt(expiredate), customerReference=aesc.encrypt(form.reference.data), amount=aesc.encrypt(form.amount.data), user=aesc.encrypt(session.get('username')))
 			db.session.add(card)
 			db.session.commit()
 			return redirect(url_for('index'))
@@ -219,7 +219,7 @@ def create():
 		os.remove(f)
 	for card in cards:
 		cardd=row2dict(card)
-		reference = ''.join(st for st in aesc.decrypt(cardd['referenceCode']) if st.isalnum())
+		reference = ''.join(st for st in aesc.decrypt(cardd['customerReference']) if st.isalnum())
 		with open("{0}.csv".format(reference), 'wb') as f:
 			keys =[]
 			for key in cardd.keys():
