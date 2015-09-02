@@ -174,7 +174,7 @@ def new_user():
 		if form.validate_on_submit():
 			user = Users.query.filter_by(username=form.username.data).first()
 			if not user:
-				user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), reset=0)
+				user = Users(username=form.username.data, password=Auth(form.username.data).hash(form.password.data), reset=1)
 				db.session.add(user)
 				db.session.commit()
 				flash("Successfully created user {0}".format(user.username))
@@ -249,7 +249,6 @@ def change():
 		if form.validate_on_submit():
 			aesc = aescrypt(StringIO.StringIO(Users.query.get(1).password).read(32)) #ridiculously arbritary but only way to reasonably encrypt data.
 			pword=Password.query.get(1)
-			key = aesc.decrypt(Password.query.get(1).password)
 			pword.password=aesc.encrypt(form.password.data)
 			db.session.commit()
 			return redirect(url_for('index'))
