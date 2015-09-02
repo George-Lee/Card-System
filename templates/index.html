@@ -1,23 +1,9 @@
 {% extends "layout.html"%}
 {% block body %}
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://raw.githubusercontent.com/Mathachew/jquery-autotab/master/js/jquery.autotab.min.js"></script>
 <script>
-    var container = document.getElementsByClassName("pan")[0];
-    container.onkeyup = function(e) {
-        var target = e.srcElement;
-        var maxLength = parseInt(target.attributes["maxlength"].value, 10);
-        var myLength = target.value.length;
-        if (myLength >= maxLength) {
-            var next = target;
-            while (next = next.nextElementSibling) {
-                if (next == null)
-                    break;
-                if (next.tagName.toLowerCase() == "input") {
-                    next.focus();
-                    break;
-                }
-            }
-        }
-    }
+    $('.pan').autotab('number')
 </script>
 {% for error in form.errors %}<p class=error><strong>Error:</strong> <b><u>{{ error }}</u></b> {{form.errors[error][0]}}</p>{%endfor%}
 <form action="{{url_for('index')}}", method="post">
