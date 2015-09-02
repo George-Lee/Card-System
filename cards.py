@@ -266,6 +266,7 @@ def pword():
 			a = Auth(user.username)
 			if a.verify(user.password, form.current.data):
 				user.password=a.hash(form.new.data)
+				user.reset=0
 			db.session.commit()
 			flash("Password successfully changed")
 		else:
